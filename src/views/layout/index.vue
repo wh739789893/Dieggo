@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-     <van-nav-bar v-if="showNavBar" fixed title="雷讯讯达" right-text="搜索"></van-nav-bar>
+     <van-nav-bar   @click-right="$router.push('/search')"   v-if="showNavBar" fixed title="雷讯讯达" right-text="搜索"></van-nav-bar>
      <!-- 二级路由容器 -->
      <div class="my-wrapper" :class="{ noTop: !showNavBar}">
           <router-view></router-view>
