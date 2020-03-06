@@ -1,12 +1,12 @@
 // 封装request模块
-// 因为要在拦截器里处理 TOKEN统一注入  响应数据的统一处理返回  处理大数字
+// 因为要在拦截器里处理 TOKEN统一注入  响应数据的统一处理返回  处理大数字 js当数字超过一定范围,计算就会不准确
 
 import axios from 'axios'
 import JSONBig from 'json-bigint' // 处理大数字插件
 import store from '@/store' // 引入vuex的store实例
 import router from '@/router' // 路由对象实例
 
-// 创建一个新的插件实例
+// 创建一个新的axios实例
 const instance = axios.create({
   baseURL: 'http://ttapi.research.itcast.cn/app/v1_0',
   transformResponse: [function (data) {
