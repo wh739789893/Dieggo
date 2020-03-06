@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { login } from '@/api/user'
+import { mapMutations } from 'vuex'
 export default {
   name: 'login',
   data () {
@@ -73,10 +75,22 @@ export default {
       return true
     },
 
+    ...mapMutations(['updateUser']),
     // 登录
-    login () {
+    async login () {
       if (this.checkMobile() && this.checkCode()) {
-        console.log('校验通过')
+        // 获取结果
+        const data = await login(this.loginForm)
+        // 更新用户信息
+        this.updateUser({ user: data })
+        // 登陆成功  提示信息
+        this.$gnotify({ type: 'success', message: '登陆成功' })
+
+        // 解构当前路由信息  需要判断两种情况
+        // 1. redirectUrl(登陆没有成功-登陆-登陆成功)
+        // 2.  没有redirectUrl--去首页
+        const { redirectUrl } = this.$route.query
+        this.$router.push(redirectUrl || '/')
       }
     }
   }
