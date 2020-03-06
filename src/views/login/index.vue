@@ -53,10 +53,10 @@ export default {
 
       // 判断格式
       if (!/^1[3-9]\d{9}$/.test(this.loginForm.mobile)) {
-        this.errMsg.mobile = '手机号格式不正确！'
+        this.errMsg.mobile = '手机格式不正确'
         return false
       }
-      this.loginForm.mobile = '' // 清空消息
+      this.errMsg.mobile = '' // 清空消息
       return true
     },
 
@@ -68,14 +68,13 @@ export default {
 
       // 判断格式
       if (!/^\d{6}$/.test(this.loginForm.code)) {
-        this.errMsg.code = '验证码格式不正确'
+        this.errMsg.code = '验证码必须为6位数字'
         return false
       }
-      this.loginForm.code = '' // 清空
+      this.errMsg.code = '' // 清空
       return true
     },
 
-    ...mapMutations(['updateUser']),
     // 登录
     async login () {
       if (this.checkMobile() && this.checkCode()) {
@@ -92,7 +91,8 @@ export default {
         const { redirectUrl } = this.$route.query
         this.$router.push(redirectUrl || '/')
       }
-    }
+    },
+    ...mapMutations(['updateUser'])
   }
 }
 </script>
