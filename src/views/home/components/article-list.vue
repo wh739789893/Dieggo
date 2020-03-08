@@ -54,7 +54,6 @@ export default {
   },
   created () {
     this.onLoad()
-    this.onRefresh()
   },
   methods: {
 
