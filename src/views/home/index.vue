@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang='less' scoped>
 .van-tabs {
   height: 100%;
   display: flex;
@@ -56,15 +56,15 @@ export default {
       height: 2px;
     }
   }
-  /deep/ .van-tabs__content{
+  /deep/ .van-tabs__content {
     flex: 1;
     overflow: hidden;
   }
-  /deep/ .van-tab__pane{
+  /deep/ .van-tab__pane {
     height: 100%;
-    .scroll-wrapper{
-      height: 80%;
-      // overflow-y: auto;
+    .scroll-wrapper {
+      height: 100%;
+      overflow-y: auto;
     }
   }
 }
@@ -93,6 +93,18 @@ export default {
     z-index: 1000;
     &::before {
       font-size: 20px;
+    }
+  }
+}
+// 编辑频道面板的样式
+.van-action-sheet {
+  max-height: 100%;
+  height: 100%;
+  .van-action-sheet__header {
+    background: #3296fa;
+    color: #fff;
+    .van-icon-close {
+      color: #fff;
     }
   }
 }

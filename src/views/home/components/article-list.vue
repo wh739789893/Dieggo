@@ -52,9 +52,7 @@ export default {
       default: null
     }
   },
-  created () {
-    this.onLoad()
-  },
+
   methods: {
 
     // 上拉加载
@@ -91,32 +89,32 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.article_item{
-  h3{
+<style lang='less' scoped>
+.article_item {
+  h3 {
     font-weight: normal;
     line-height: 2;
   }
-  .img_box{
+  .img_box {
     display: flex;
     justify-content: space-between;
-    .w33{
+    .w33 {
       width: 33%;
       height: 90px;
     }
-    .w100{
+    .w100 {
       width: 100%;
       height: 180px;
     }
   }
-  .info_box{
+  .info_box {
     color: #999;
     line-height: 2;
     position: relative;
     font-size: 12px;
-    span{
+    span {
       padding-right: 10px;
-      &.close{
+      &.close {
         border: 1px solid #ddd;
         border-radius: 2px;
         line-height: 15px;
