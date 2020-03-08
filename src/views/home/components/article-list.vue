@@ -60,6 +60,7 @@ export default {
 
     // 上拉加载
     async onLoad () {
+      await this.$sleep() // 等待
       const data = await getArticles({ channel_id: this.channel_id, timestamp: this.timestamp || Date.now() })
       // 追加数据到队尾
       this.articles.push(...data.results)
@@ -75,6 +76,7 @@ export default {
 
     // 下拉刷新
     async onRefresh () {
+      await this.$sleep() // 等待
       const data = await getArticles({ channel_id: this.channel_id, timestamp: Date.now() })
       this.downLoading = false // 关掉下拉状态
       if (data.results.length) {
