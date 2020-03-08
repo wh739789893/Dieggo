@@ -15,6 +15,16 @@
        <!-- 包裹反馈组件 -->
         <more-action @dislike="dislikeOrReport($event,'dislike')" @report="dislikeOrReport($event,'report')"></more-action>
      </van-popup>
+     <!-- 编辑频道 -->
+     <van-action-sheet :round="false" title="编辑频道" v-model="showChannelEdit">
+        <channel-edit
+          @addChannel="addChannel"
+          @delChannel="delChannel"
+          :activeIndex="activeIndex"
+          @selectChannel="selectChannel"
+          :channels="channels"
+        ></channel-edit>
+     </van-action-sheet>
   </div>
 </template>
 
@@ -23,11 +33,12 @@ import ArticleList from './components/article-list'
 import MoreAction from './components/more-action'
 import { disLikeArticle, reportArticle } from '@/api/article'
 import { getMyChannels } from '@/api/channels'
+import ChannelEdit from './components/channel-edit'
 import eventBus from '@/utils/eventBus'
 export default {
   name: 'home',
   components: {
-    ArticleList, MoreAction
+    ArticleList, MoreAction, ChannelEdit
   },
   created () {
     this.getMyChannels()
@@ -37,7 +48,8 @@ export default {
       activeIndex: 0, // 默认启动第0个标签
       channels: [], // 频道数据
       articleId: null, // 接收文章Id
-      showMoreAction: false
+      showMoreAction: false,
+      showChannelEdit: false // 频道
     }
   },
   methods: {
