@@ -22,6 +22,7 @@ import ArticleList from './components/article-list'
 import MoreAction from './components/more-action'
 import { disLikeArticle } from '@/api/article'
 import { getMyChannels } from '@/api/channels'
+import eventBus from '@/utils/eventBus'
 export default {
   name: 'home',
   components: {
@@ -55,12 +56,15 @@ export default {
     async dislike () {
       try {
         if (this.articleId) {
-          await disLikeArticle({ target: this.articleId })
+          await disLikeArticle({
+            target: this.articleId
+          })
           this.$gnotify({ type: 'success', message: '操作成功' })
+          eventBus.$emit('delArticle', this.articleId, this.channels[this.activeIndex].id)
           this.showMoreAction = false
         }
       } catch (error) {
-        this.$gnotify({ type: 'success', message: '操作失败' })
+        this.$gnotify({ type: 'danger', message: '操作失败' })
       }
     }
   }
