@@ -38,7 +38,15 @@ export default {
       finished: false, // 是否加载完成
       refreshSuccessText: '更新成功',
       downLoading: false, // 是否开启下拉刷新
-      articles: [] // 定义一个数组
+      articles: [], // 定义一个数组
+      timestamp: null // 存放时间戳
+    }
+  },
+  props: {
+    channnel_id: {
+      type: Number, // 指定类型
+      default: null, // 默认值
+      required: true // 要求必须传该props  否则报错
     }
   },
   methods: {

@@ -9,7 +9,7 @@
               </van-cell-group>
           </div> -->
           <!-- 引入组件 -->
-          <article-list></article-list>
+          <article-list :channel_id = "item.id"></article-list>
        </van-tab>
      </van-tabs>
      <span class="bar_btn">
