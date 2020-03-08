@@ -63,8 +63,8 @@ export default {
   /deep/ .van-tab__pane{
     height: 100%;
     .scroll-wrapper{
-      height: 100%;
-      overflow-y: auto;
+      height: 80%;
+      // overflow-y: auto;
     }
   }
 }
