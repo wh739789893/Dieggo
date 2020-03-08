@@ -44,8 +44,9 @@ export default {
     },
 
     // 弹出层
-    openMoreAction () {
+    openMoreAction (artId) {
       this.showMoreAction = true
+      this.articleId = artId
     }
   }
 }
