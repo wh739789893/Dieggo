@@ -4,7 +4,7 @@ import request from '@/utils/request'
 /*
 获取我的频道
 **/
-export function getMychannels () {
+export function getMyChannels () {
   return request({
     url: '/user/channels'
   })

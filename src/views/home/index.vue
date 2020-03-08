@@ -2,16 +2,11 @@
   <div class="container">
      <van-tabs v-model="activeIndex" swipeable>
        <van-tab :title="channel.name" v-for="channel in channels" :key="channel.id">
-          <!-- 阅读记忆 -->
-          <!-- <div class="scroll-wrapper">
-              <van-cell-group>
-                 <van-cell v-for="obj in 20" :key="obj" :title="item"></van-cell>
-              </van-cell-group>
-          </div> -->
           <!-- 引入组件 -->
-          <article-list :channel_id = "item.id"></article-list>
+         <article-list  :channel_id="channel.id"></article-list>
        </van-tab>
      </van-tabs>
+     <!-- 显示编辑图标 -->
      <span class="bar_btn">
         <van-icon name="wap-nav"></van-icon>
      </span>
@@ -20,25 +15,26 @@
 
 <script>
 import ArticleList from './components/article-list'
-import { getMychannels } from '@/api/channel'
+import { getMyChannels } from '@/api/channels'
 export default {
   name: 'home',
   components: {
     ArticleList
   },
   created () {
-    this.getMychannels()
+    this.getMyChannels()
   },
   data () {
     return {
       activeIndex: 0, // 默认启动第0个标签
-      channels: [] // 频道数据
+      channels: [], // 频道数据
+      articleId: null // 接收文章Id
     }
   },
   methods: {
-    async getMychannels () {
-      const data = await getMychannels()
-      this.channels = data.channels // 更新频道数据
+    async getMyChannels () {
+      const data = await getMyChannels()
+      this.channels = data.channels // 更新原来的channels
     }
   }
 }
