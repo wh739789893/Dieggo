@@ -24,14 +24,7 @@ export default {
   },
 
   created () {
-    eventBus.$on('delArticle', (articleId, channelId) => {
-      if (this.channelId === articleId) {
-        const index = this.articles.findIndex(item => item.art_id.toString() === articleId)
-        if (index > -1) { // 大于-1表示找到了
-          this.articles.splice(index, 1) // 删除不喜欢文章
-        }
-      }
-    })
+    eventBus.$on('delArticle', () => (this.isReport = false))
   }
 }
 </script>

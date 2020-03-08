@@ -12,7 +12,7 @@
      </span>
      <!-- 放置弹层组件 -->
      <van-popup :style="{width:'80%'}" v-model="showMoreAction">
-        <more-action @dislike="dislike"></more-action>
+        <more-action @dislike="dislikeOrReport($event,'dislike')" @report="dislikeOrReport($event,'report')"></more-action>
      </van-popup>
   </div>
 </template>
@@ -20,7 +20,7 @@
 <script>
 import ArticleList from './components/article-list'
 import MoreAction from './components/more-action'
-import { disLikeArticle } from '@/api/article'
+import { disLikeArticle, reportArticle } from '@/api/article'
 import { getMyChannels } from '@/api/channels'
 import eventBus from '@/utils/eventBus'
 export default {
@@ -53,12 +53,10 @@ export default {
     },
 
     // 不喜欢文章
-    async dislike () {
+    async dislikeOrReport (params, operateType) {
       try {
         if (this.articleId) {
-          await disLikeArticle({
-            target: this.articleId
-          })
+          operateType === 'dislike' ? await disLikeArticle({ target: this.articleId }) : await reportArticle({ target: this.articleId, type: params })
           this.$gnotify({ type: 'success', message: '操作成功' })
           eventBus.$emit('delArticle', this.articleId, this.channels[this.activeIndex].id)
           this.showMoreAction = false
