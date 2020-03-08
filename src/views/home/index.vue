@@ -1,7 +1,7 @@
 <template>
   <div class="container">
      <van-tabs v-model="activeIndex" swipeable>
-       <van-tab :title="'标签' + item" v-for="item in 10" :key="item">
+       <van-tab :title="channel.name" v-for="channel in channels" :key="channel.id">
           <!-- 阅读记忆 -->
           <!-- <div class="scroll-wrapper">
               <van-cell-group>
@@ -9,7 +9,7 @@
               </van-cell-group>
           </div> -->
           <!-- 引入组件 -->
-          <ArticleList></ArticleList>
+          <article-list></article-list>
        </van-tab>
      </van-tabs>
      <span class="bar_btn">
@@ -20,15 +20,25 @@
 
 <script>
 import ArticleList from './components/article-list'
-
+import { getMychannels } from '@/api/channel'
 export default {
   name: 'home',
   components: {
     ArticleList
   },
+  created () {
+    this.getMychannels()
+  },
   data () {
     return {
-      activeIndex: 0 // 默认启动第0个标签
+      activeIndex: 0, // 默认启动第0个标签
+      channels: [] // 频道数据
+    }
+  },
+  methods: {
+    async getMychannels () {
+      const data = await getMychannels()
+      this.channels = data.channels // 更新频道数据
     }
   }
 }
