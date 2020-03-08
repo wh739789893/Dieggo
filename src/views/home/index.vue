@@ -12,7 +12,7 @@
      </span>
      <!-- 放置弹层组件 -->
      <van-popup :style="{width:'80%'}" v-model="showMoreAction">
-        <more-action></more-action>
+        <more-action @dislike="dislike"></more-action>
      </van-popup>
   </div>
 </template>
@@ -20,6 +20,7 @@
 <script>
 import ArticleList from './components/article-list'
 import MoreAction from './components/more-action'
+import { disLikeArticle } from '@/api/article'
 import { getMyChannels } from '@/api/channels'
 export default {
   name: 'home',
@@ -38,6 +39,7 @@ export default {
     }
   },
   methods: {
+    // 获取频道
     async getMyChannels () {
       const data = await getMyChannels()
       this.channels = data.channels // 更新原来的channels
@@ -47,6 +49,19 @@ export default {
     openMoreAction (artId) {
       this.showMoreAction = true
       this.articleId = artId
+    },
+
+    // 不喜欢文章
+    async dislike () {
+      try {
+        if (this.articleId) {
+          await disLikeArticle({ target: this.articleId })
+          this.$gnotify({ type: 'success', message: '操作成功' })
+          this.showMoreAction = false
+        }
+      } catch (error) {
+        this.$gnotify({ type: 'success', message: '操作失败' })
+      }
     }
   }
 }
