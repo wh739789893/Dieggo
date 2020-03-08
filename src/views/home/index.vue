@@ -10,16 +10,21 @@
      <span class="bar_btn">
         <van-icon name="wap-nav"></van-icon>
      </span>
+     <!-- 放置弹层组件 -->
+     <van-popup :style="{width:'80%'}" v-model="showMoreAction">
+        <more-action></more-action>
+     </van-popup>
   </div>
 </template>
 
 <script>
 import ArticleList from './components/article-list'
+import MoreAction from './components/more-action'
 import { getMyChannels } from '@/api/channels'
 export default {
   name: 'home',
   components: {
-    ArticleList
+    ArticleList, MoreAction
   },
   created () {
     this.getMyChannels()
@@ -28,7 +33,8 @@ export default {
     return {
       activeIndex: 0, // 默认启动第0个标签
       channels: [], // 频道数据
-      articleId: null // 接收文章Id
+      articleId: null, // 接收文章Id
+      showMoreAction: false
     }
   },
   methods: {
