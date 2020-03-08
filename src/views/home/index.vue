@@ -7,7 +7,7 @@
        </van-tab>
      </van-tabs>
      <!-- 显示编辑图标 -->
-     <span class="bar_btn">
+     <span class="bar_btn" @click="showChannelEdit=true">
         <van-icon name="wap-nav"></van-icon>
      </span>
      <!-- 放置弹层组件 -->
@@ -17,13 +17,7 @@
      </van-popup>
      <!-- 编辑频道 -->
      <van-action-sheet :round="false" title="编辑频道" v-model="showChannelEdit">
-        <channel-edit
-          @addChannel="addChannel"
-          @delChannel="delChannel"
-          :activeIndex="activeIndex"
-          @selectChannel="selectChannel"
-          :channels="channels"
-        ></channel-edit>
+        <channel-edit></channel-edit>
      </van-action-sheet>
   </div>
 </template>
