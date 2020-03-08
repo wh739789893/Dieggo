@@ -3,7 +3,7 @@
      <van-tabs v-model="activeIndex" swipeable>
        <van-tab :title="channel.name" v-for="channel in channels" :key="channel.id">
           <!-- 引入组件 -->
-         <article-list  :channel_id="channel.id"></article-list>
+         <article-list  @showMoreAction="openMoreAction"   :channel_id="channel.id"></article-list>
        </van-tab>
      </van-tabs>
      <!-- 显示编辑图标 -->
@@ -41,6 +41,11 @@ export default {
     async getMyChannels () {
       const data = await getMyChannels()
       this.channels = data.channels // 更新原来的channels
+    },
+
+    // 弹出层
+    openMoreAction () {
+      this.showMoreAction = true
     }
   }
 }
