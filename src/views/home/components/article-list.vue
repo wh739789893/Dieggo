@@ -34,6 +34,7 @@
 <script>
 import { getArticles } from '@/api/article'
 import { mapState } from 'vuex'
+import eventBus from '@/utils/eventBus'
 export default {
   name: 'article-list',
   computed: {
@@ -55,6 +56,18 @@ export default {
       type: Number,
       default: null
     }
+  },
+
+  created () {
+    // 开启监听  监听删除事件
+    eventBus.$on('delArticle', (articleId, channelId) => {
+      if (this.channel_id === channelId) {
+        const index = this.articles.findIndex(item => item.art_id.toString() === articleId) // 查找对应的文章
+        if (index > -1) {
+          this.articles.splice(index, 1)
+        }
+      }
+    })
   },
 
   methods: {

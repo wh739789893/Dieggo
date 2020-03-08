@@ -12,6 +12,7 @@
      </span>
      <!-- 放置弹层组件 -->
      <van-popup :style="{width:'80%'}" v-model="showMoreAction">
+       <!-- 包裹反馈组件 -->
         <more-action @dislike="dislikeOrReport($event,'dislike')" @report="dislikeOrReport($event,'report')"></more-action>
      </van-popup>
   </div>
@@ -53,6 +54,8 @@ export default {
     },
 
     // 不喜欢文章
+    // operateType 操作类型 dislike /report
+    // params是 举报类型的参数
     async dislikeOrReport (params, operateType) {
       try {
         if (this.articleId) {
