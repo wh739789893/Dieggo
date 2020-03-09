@@ -95,9 +95,9 @@ export default {
   openReply (commentId) {
     this.showReply = true
     this.reply.commentId = commentId // 存储当前点击的commentId
-    this.reply.list = []
-    this.reply.offest = null
-    this.reply.finished = false
+    this.reply.list = [] // 清空元数据
+    this.reply.offest = null // 偏移量置为空
+    this.reply.finished = false // 设置成原始状态
     this.reply.loading = true // 打开加载状态 这时候没有自动检查
     this.getReply() // 开始调用第一页数据
   }
