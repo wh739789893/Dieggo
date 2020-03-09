@@ -22,6 +22,7 @@
         :activeIndex="activeIndex"
         @selectChannel="selectChannel"
         @delChannel="delChannel"
+        @addChannel="addChannel"
         ></channel-edit>
         <!-- 监听子组件触发的事件    @delChannel="delChannel"     -->
      </van-action-sheet>
@@ -32,7 +33,7 @@
 import ArticleList from './components/article-list'
 import MoreAction from './components/more-action'
 import { disLikeArticle, reportArticle } from '@/api/article'
-import { getMyChannels, delChannel } from '@/api/channels'
+import { getMyChannels, delChannel, addChannel } from '@/api/channels'
 import ChannelEdit from './components/channel-edit'
 import eventBus from '@/utils/eventBus'
 export default {
@@ -104,6 +105,12 @@ export default {
       } catch (error) {
         this.$gnotify({ type: 'danger', message: '删除频道失败' })
       }
+    },
+
+    // 添加频道
+    async addChannel (channel) {
+      await addChannel(channel)
+      this.channels.push(channel)
     }
   }
 }
