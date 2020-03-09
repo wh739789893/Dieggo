@@ -44,8 +44,23 @@ export function getAllChannels () {
 /****
  *删除频道
  * ***/
+
+// 还是缓存思想
+// 1.设置key 来区分使用户还是游客登陆
+// 2. 刚开始获取缓存数据是有的 得到缓存数据
+// 3.利用findIndex 找到频道索引
+// 4.如果索引存在那么就找见该频道 去删除 删除完了要重新写入缓存!释放Promise给下一个
 export function delChannel (id) {
   return new Promise(function (resolve, reject) {
-  //  const key = store.state.user.token ? CACHE_CHANNEL_U : CACHE_CHANNEL_T // 缓存key
+    const key = store.state.user.token ? CACHE_CHANNEL_U : CACHE_CHANNEL_T // 缓存key
+    const channels = JSON.parse(localStorage.getItem(key)) // 得到缓存数据
+    const index = channels.findIndex(item => item.id === id) // 找到对应频道索引
+    if (index > -1) {
+      channels.splice(index, 1)
+      localStorage.setItem(key, JSON.stringify(channels)) // 重新写入缓存
+      resolve() // 释放数据 执行连提供给下一个Promise
+    } else {
+      reject(new Error('找不到对应频道'))
+    }
   })
 }
