@@ -24,8 +24,27 @@
 </template>
 
 <script>
+import { getArticleInfo } from '@/api/article'
 export default {
-  name: 'article'
+  name: 'article',
+  data () {
+    return {
+      article: {} // 接收文章数据
+    }
+  },
+
+  methods: {
+    // 获取文章详情
+    async getArticleInfo () {
+      const { articleId } = this.$route.query // 查询地址栏id
+      this.article = await getArticleInfo(articleId)
+    }
+  },
+
+  created () {
+    this.getArticleInfo()
+  }
+
 }
 </script>
 
