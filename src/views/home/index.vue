@@ -32,7 +32,7 @@
 import ArticleList from './components/article-list'
 import MoreAction from './components/more-action'
 import { disLikeArticle, reportArticle } from '@/api/article'
-import { getMyChannels } from '@/api/channels'
+import { getMyChannels, delChannel } from '@/api/channels'
 import ChannelEdit from './components/channel-edit'
 import eventBus from '@/utils/eventBus'
 export default {
@@ -78,6 +78,31 @@ export default {
         }
       } catch (error) {
         this.$gnotify({ type: 'danger', message: '操作失败' })
+      }
+    },
+
+    // 删除频道
+
+    /*
+        删除频道思想
+     1. 有一个实际情况需要考虑就是 要删除的频道是否是当前激活频道
+     2.所以要拿到索引去判断  当然第一步是删除 是根据id去删除的 这个是 子组件中传出来的
+     3.比较索引 要删除的索引  let index = this.channels.findIndex(item => item.id === id)  当前索引  this.activeIndex
+     4.若这个删除频道的索引在当前激活频道之前  或者就是当前激活频道  那么要把激活索引向前挪一位   this.activeIndex = this.activeIndex - 1
+     5.判断了要删除索引和当前激活频道索引关系后 就简单了 如果存在那么直接删除当前频道就行  this.channels.splice(index, 1)
+    */
+    async delChannel (id) {
+      try {
+        await delChannel(id)
+        const index = this.channels.findIndex(item => item.id === id) // 找到删除的索引
+        if (index < this.activeIndex) {
+          this.activeIndex = this.activeIndex - 1
+        }
+        if (index > -1) {
+          this.channels.splice(index, 1) // 移除当前频道
+        }
+      } catch (error) {
+        this.$gnotify({ type: 'danger', message: '删除频道失败' })
       }
     }
   }
