@@ -10,7 +10,7 @@
           <p class="time">{{ article.pubdate | relTime }}</p>
         </div>
         <!-- 给一个标记表示已经关注 -->
-        <van-button round size="small" type="info">{{ article.is_followed? '已关注':'+关注'}}</van-button>
+        <van-button   @click="follow()"   round size="small" type="info">{{ article.is_followed? '已关注':'+关注'}}</van-button>
       </div>
 
       <!-- 渲染html标签 -->
