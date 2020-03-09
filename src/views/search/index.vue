@@ -17,15 +17,15 @@
         <span>j</span>ava
       </van-cell>
     </van-cell-group>
-    <div class="history-box" v-else>
+    <div class="history-box" v-else-if="historyList.length">
       <div class="head">
         <span>历史记录</span>
-        <van-icon name="delete"></van-icon>
+        <van-icon name="delete" @click="clear"></van-icon>
       </div>
       <van-cell-group>
-        <van-cell>
-          <a class="word_btn">电脑</a>
-          <van-icon class="close_btn" slot="right-icon" name="cross" />
+        <van-cell   @click="toSearchResult(text)"   v-for="(item,index) in historyList" :key="index">
+          <a class="word_btn">{{item}}</a>
+          <van-icon   @click="delHistory(index)"     class="close_btn" slot="right-icon" name="cross" />
         </van-cell>
       </van-cell-group>
     </div>
@@ -33,11 +33,36 @@
 </template>
 
 <script>
+const key = 'lxxd-110-history'
 export default {
   name: 'search',
   data () {
     return {
-      q: ''
+      q: '',
+      historyList: [] // 历史记录数据
+    }
+  },
+
+  methods: {
+    created () {
+      this.historyList = JSON.parse(localStorage.getItem(key) || '[]')
+    },
+
+    // 删除对应历史记录
+    delHistory (index) {
+      this.historyList.splice(index, 1)
+      localStorage.setItem(key, JSON.stringify(this.historyList)) // 重新写入缓存
+    },
+
+    // 跳到搜索结果页面
+    toResult (text) {
+      this.$router.push({ path: '/search/result', query: { q: text } })
+    },
+
+    // 清空操作
+    clear () {
+      this.historyList = []
+      localStorage.setItem(key, '[]')
     }
   }
 }
