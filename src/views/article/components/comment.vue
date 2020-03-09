@@ -29,12 +29,12 @@
     <div class="reply-container van-hairline--top">
       <van-field v-model="value" placeholder="写评论...">
         <van-loading v-if="submiting" slot="button" type="spinner" size="16px"></van-loading>
-        <span class="submit" v-else slot="button">提交</span>
+        <span class="submit"  @click="submit()"   v-else slot="button">提交</span>
       </van-field>
     </div>
     <!-- 回复列表弹层 -->
         <!-- 回复 -->
-    <van-action-sheet v-model="showReply" :round="false" class="reply_dialog" title="回复评论">
+    <van-action-sheet  @closed="reply.commentId=null"    v-model="showReply" :round="false" class="reply_dialog" title="回复评论">
       <van-list  @load="getReply"  :immediate-check="false"   v-model="reply.loading" :finished="reply.finished" finished-text="没有更多了">
         <div class="item van-hairline--bottom van-hairline--top" v-for="reply in reply.list" :key="reply.com_id.toString()">
         <!-- 用户头像 -->
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { getComments } from '@/api/article'
+import { getComments, commentOrReply } from '@/api/article'
 export default {
   data () {
     return {
@@ -114,6 +114,35 @@ export default {
     if (!this.reply.finished) {
       this.reply.offest = data.last_id
     }
+  },
+
+  async submit () {
+    if (!this.value) return false
+    this.submiting = true // 打开提交状态
+    await this.$sleep() // 强制等待500毫秒
+    try {
+      const data = await commentOrReply({
+        target: this.reply.commentId ? this.reply.commentId.toString() : this.$route.query.articleId,
+        content: this.value,
+        art_id: this.reply.commentId ? this.$route.query.articleId : null
+      })
+
+      // 评论成功   要刷新页面
+      if (this.reply.commentId) {
+        this.reply.list.unshift(data.new_obj) // 数据添加到队首
+        // 找到评论
+        const comment = this.comments.find(item => item.com_id.toString() === this.reply.commentId.toString())
+        comment && comment.reply_count++ // 找到了 对回复数据+1
+      } else {
+        // 对文章评论
+        this.comments.unshift(data.new_obj)
+      }
+      this.value = '' // 清空输入框
+    } catch (error) {
+      this.$gnotify({ type: 'danger', message: '评论失败' })
+    }
+    // 关闭状态
+    this.submiting = false // 关闭进度条
   }
 }
 </script>
