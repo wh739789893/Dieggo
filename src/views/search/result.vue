@@ -1,24 +1,25 @@
  <template>
-  <div class='container'>
+   <div class='container'>
      <van-nav-bar fixed title="搜索结果" left-arrow @click-left="$router.back()" />
-
-      <van-list v-model="upLoading" finished="finished" @load="onload">
+      <van-list v-model="upLoading" :finished="finished" @load="onLoad">
         <van-cell-group>
-          <van-cell v-for="item in articles" :key="item.art_id.toString()">
+          <!-- art_id有可能是大数字 超过一定长度会转成 BigNumber  要toString一下 -->
+          <van-cell :to="`/article?articleId=${item.art_id.toString()}`" v-for="item in articles" :key="item.art_id.toString()">
             <div class="article_item">
-              <h3 class="van-ellipsis">{{item.title}}</h3>
+              <h3 class="van-ellipsis">{{ item.title }}</h3>
               <div class="img_box" v-if="item.cover.type === 3">
-                <van-image  lazy-load  class="w33" fit="cover" src="item.cover.images[0]" />
-                <van-image  lazy-load  class="w33" fit="cover" src="item.cover.images[1]" />
-                <van-image  lazy-load  class="w33" fit="cover" src="item.cover.images[2]" />
+                <!-- 支持图片懒加载   当图片显示在当前可视区域的时候才去请求该图片的地址 -->
+                <van-image lazy-load class="w33" fit="cover" :src="item.cover.images[0]" />
+                <van-image lazy-load class="w33" fit="cover" :src="item.cover.images[1]"  />
+                <van-image lazy-load class="w33" fit="cover" :src="item.cover.images[2]"  />
               </div>
               <div class="img_box" v-if="item.cover.type === 1">
-                <van-image  lazy-load  class="w100" fit="cover" src="item.cover.images[0]" />
+                <van-image lazy-load class="w100" fit="cover" :src="item.cover.images[0]"  />
               </div>
               <div class="info_box">
-                <span>{{ item.aut_name}}</span>
+                <span>{{ item.aut_name }}</span>
                 <span>{{item.comm_count}}评论</span>
-                <span>{{item.pubdate|relTime}}</span>
+                <span>{{ item.pubdate | relTime }}</span>
               </div>
             </div>
           </van-cell>
@@ -30,6 +31,7 @@
 <script>
 import { searchArticle } from '@/api/article'
 export default {
+  name: 'searchResult',
   data () {
     return {
       upLoading: false,
