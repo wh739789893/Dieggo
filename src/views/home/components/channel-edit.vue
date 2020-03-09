@@ -19,8 +19,8 @@
     <div class="channel">
       <div class="tit">可选频道：</div>
       <van-grid class="van-hairline--left">
-        <van-grid-item v-for="index in 8" :key="index">
-          <span class="f12">频道{{index}}</span>
+        <van-grid-item v-for="channel in optionalChannels" :key="channel.id">
+          <span class="f12">{{channel.name}}</span>
           <van-icon class="btn" name="plus"></van-icon>
         </van-grid-item>
       </van-grid>
@@ -29,21 +29,46 @@
 </template>
 
 <script>
+import { getAllChannels } from '@/api/channels'
 export default {
   data () {
     return {
-      editing: false
+      editing: false,
+      allChannels: [] // 接收所有频道
     }
   },
 
   props: {
-    // 接收数据
-    type: Array,
-    default: () => [] // eslint 要求我们必须用一个函数来声明数组类型 所以用箭头函数
+    //   接收props数据
+    channels: {
+      type: Array,
+      default: () => [] // eslint 要求我们必须用一个函数来声明数组类型 所以用箭头函数
+    },
+    activeIndex: {
+      type: Number // 接收频道激活索引
+    }
   },
-  activeIndex: {
-    type: Number // 接收频道激活索引
+
+  methods: {
+    // 获取所有频道
+    async getAllChannels () {
+      const data = await getAllChannels()
+      this.channels = data.channels
+    }
+  },
+
+  // 计算属性   可选频道 = 全部频道 - 我的频道
+  computed: {
+    // 可用频道
+    optionalChannels () {
+      return this.allChannels.filter(item => !this.channels.some(o => o.id === item.id))
+    }
+  },
+
+  created () {
+    this.getAllChannels() // 获取所有频道
   }
+
 }
 </script>
 
