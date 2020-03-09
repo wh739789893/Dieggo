@@ -21,7 +21,9 @@
         :channels="channels"
         :activeIndex="activeIndex"
         @selectChannel="selectChannel"
+        @delChannel="delChannel"
         ></channel-edit>
+        <!-- 监听子组件触发的事件    @delChannel="delChannel"     -->
      </van-action-sheet>
   </div>
 </template>

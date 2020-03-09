@@ -11,7 +11,8 @@
         <van-grid-item v-for="(item,i) in channels" :key="item.id">
           <span  :class="{red:i === activeIndex}" @click="$emit('selectChannel',item.id)"   class="f12">{{ item.name }}</span>
           <template v-if="i!==0">
-            <van-icon v-show="editing" class="btn" name="cross"></van-icon>
+            <!-- 先给删除按钮 注册事件 触发自定义事件 传出 删除的频道id -->
+            <van-icon   @click="$emit('delChannel',channel.id)"   v-show="editing" class="btn" name="cross"></van-icon>
           </template>
         </van-grid-item>
       </van-grid>
