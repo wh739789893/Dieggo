@@ -33,13 +33,15 @@
 </template>
 
 <script>
+import { suggestion } from '@/api/article'
 const key = 'lxxd-110-history'
 export default {
   name: 'search',
   data () {
     return {
       q: '',
-      historyList: [] // 历史记录数据
+      historyList: [], // 历史记录数据
+      suggestList: [] // 联想建议
     }
   },
 
@@ -75,6 +77,23 @@ export default {
 
       // 携带参数去搜索结果页面
       this.$router.push({ path: '/search/result', query: { q: this.q } })
+    }
+  },
+
+  watch: {
+    // 函数节流
+    q () {
+      if (!this.timer) {
+        this.timer = setTimeout(async () => {
+          this.timer = null
+          if (!this.q) {
+            this.suggestList = [] // 搜索关键字成为空  连想数组清空
+            return false
+          }
+          const data = await suggestion({ q: this.q })
+          this.suggestList = data.options
+        }, 500)
+      }
     }
   }
 }
