@@ -1,6 +1,6 @@
 <template>
   <div class="comment">
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了">
+    <van-list  @click="onLoad"  v-model="loading" :finished="finished" finished-text="没有更多了">
       <div class="item van-hairline--bottom van-hairline--top" v-for="index in 5" :key="index">
         <van-image
           round
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { getComments } from '@/api/article'
 export default {
   data () {
     return {
@@ -47,7 +48,25 @@ export default {
       // 输入的内容
       value: '',
       // 控制提交中状态数据
-      submiting: false
+      submiting: false,
+      comments: [], // 存放评论列表的数据
+      offest: null // 表示分页依据 若为空 从第一页开始
+    }
+  },
+
+  // 一级评论
+  async onLoad () {
+    const data = await getComments({
+      type: 'a', // 获取类型
+      offest: this.offest, // 偏移量
+      source: this.$route.query.articleId // 获取文章的id
+    })
+    this.comments.push(...data.results)
+    this.loading = false
+    this.finished = data.last_id === data.end_id
+    if (!this.finished) {
+      // 这就表明 last_id 和 end_id不相等 表示还有数据
+      this.offest = data.last_id // 将last_Id设置成下一页的请求依据
     }
   }
 }
