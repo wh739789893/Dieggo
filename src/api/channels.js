@@ -64,3 +64,14 @@ export function delChannel (id) {
     }
   })
 }
+
+// 添加频道
+export function addChannel (channel) {
+  return new Promise(function (resolve, reject) {
+    const key = store.state.user.token ? CACHE_CHANNEL_U : CACHE_CHANNEL_T // 缓存key
+    const channels = JSON.parse(localStorage.getItem(key)) // 得到缓存数据
+    channels.push(channel) // 频道添加队尾
+    localStorage.setItem(key, JSON.stringify(channels))
+    resolve() // 释放成功
+  })
+}
