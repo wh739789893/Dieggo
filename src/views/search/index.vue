@@ -47,7 +47,7 @@ export default {
 
   methods: {
     created () {
-      this.historyList = JSON.parse(localStorage.getItem(key) || '[]')
+      this.historyList = JSON.parse(localStorage.getItem(key) || '[]') // 读取本地化内容
     },
 
     // 删除对应历史记录
@@ -63,8 +63,8 @@ export default {
 
     // 清空操作
     clear () {
-      this.historyList = []
-      localStorage.setItem(key, '[]')
+      this.historyList = [] // 清空所有历史
+      localStorage.setItem(key, '[]') // 写入缓存
     },
 
     // 搜索按钮,回车或者虚拟键盘搜索  => 搜索事件
