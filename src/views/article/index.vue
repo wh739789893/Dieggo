@@ -27,6 +27,7 @@
 
 <script>
 import { getArticleInfo } from '@/api/article'
+import { followUser, unFollowUser } from '@/api/user'
 export default {
   name: 'article',
   data () {
@@ -40,6 +41,23 @@ export default {
     async getArticleInfo () {
       const { articleId } = this.$route.query // 查询地址栏id
       this.article = await getArticleInfo(articleId)
+    },
+
+    // 取消与关注
+    async follow () {
+      try {
+        if (this.article.is_followed) {
+          // 取消关注
+          await unFollowUser(this.article.aut_id)
+        } else {
+          // 关注接口
+          await followUser({ target: this.article.aut_id })
+        }
+        this.article.is_followed = !this.article.is_followed // 取反操作 关注与取消
+        this.$gnotify({ type: 'success', message: '操作成功' })
+      } catch (error) {
+        this.$gnotify({ type: 'success', message: '操作失败' })
+      }
     }
   },
 
