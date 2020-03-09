@@ -28,8 +28,38 @@
 </template>
 
 <script>
+import { searchArticle } from '@/api/article'
 export default {
+  data () {
+    return {
+      upLoading: false,
+      finished: false,
+      articles: [],
+      page: {
+        page: 1,
+        per_page: 10
+      }
+    }
+  },
 
+  methods: {
+    async onLoad () {
+      const { q } = this.$route.query // 地址栏解析查询参数
+      const data = await searchArticle({ ...this.page, q })
+
+      // 上拉加载 数据要追加到队尾
+      this.articles.push(...data.results)
+      // 关闭加载状态
+      this.upLoading = false
+
+      // 如何判断下一页是否还有数据呢？ 通过返回的数组长度去判断  要是长度不为0表示还有数据 反之就是没有
+      if (data.results.length) {
+        this.page.page++ // 将页码加1 表示还有下一页数据
+      } else {
+        this.finished = true // 加载结束
+      }
+    }
+  }
 }
 </script>
 
