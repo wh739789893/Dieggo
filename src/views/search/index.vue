@@ -3,7 +3,7 @@
     <!-- 搜索组件一级路由   返回上一个页面-->
     <van-nav-bar left-arrow title="搜索中心" @click-left="$router.back()"></van-nav-bar>
     <!-- 导航 -->
-    <van-search   v-model.trim="q"    placeholder="请输入搜索关键词" shape="round" />
+    <van-search   @click="onSearch"    v-model.trim="q"    placeholder="请输入搜索关键词" shape="round" />
     <!--
       什么时候出现联想搜索, ? 什么时候出现 历史记录 ?
 
@@ -63,6 +63,18 @@ export default {
     clear () {
       this.historyList = []
       localStorage.setItem(key, '[]')
+    },
+
+    // 搜索按钮,回车或者虚拟键盘搜索  => 搜索事件
+    onSearch () {
+      if (!this.q) return
+      const obj = new Set(this.historyList)
+      obj.add(this.q)
+      this.historyList = Array.from(obj) // set转为数组
+      localStorage.setItem(key, JSON.stringify(this.historyList)) // 重新写入缓存
+
+      // 携带参数去搜索结果页面
+      this.$router.push({ path: '/search/result', query: { q: this.q } })
     }
   }
 }
