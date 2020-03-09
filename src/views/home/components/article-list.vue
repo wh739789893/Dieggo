@@ -20,7 +20,7 @@
               <span>{{ article.aut_name }}</span>
               <span>{{ article.comm_count }}评论</span>
               <span>{{ article.pubdate | relTime}}</span>
-              <span class="close" v-if="user.token" @click="$emit('showMoreAction',article.art_id.toString())">
+              <span class="close" v-if="user.token" @click.stop="$emit('showMoreAction',article.art_id.toString())">
                 <van-icon name="cross"></van-icon>
               </span>
             </div>
