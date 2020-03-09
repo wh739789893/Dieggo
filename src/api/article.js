@@ -74,3 +74,15 @@ export function getComments (params) {
     params
   })
 }
+
+/*****
+ *
+ * 封装评论或者回复评论的方法
+ * ****/
+export function commentOrReply (data) {
+  return request({
+    url: '/comments',
+    method: 'post',
+    data
+  })
+}
