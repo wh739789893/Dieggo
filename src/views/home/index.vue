@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-     <van-tabs v-model="activeIndex" swipeable>
+    <!-- 监听tabs切换事件 -->
+     <van-tabs v-model="activeIndex" swipeable @change="changeTab">
        <van-tab :title="channel.name" v-for="channel in channels" :key="channel.id">
           <!-- 引入组件 -->
          <article-list  @showMoreAction="openMoreAction"   :channel_id="channel.id"></article-list>
@@ -60,10 +61,22 @@ export default {
       this.channels = data.channels // 更新原来的channels
     },
 
+    // 切换Tab页触发
+    changeTab () {
+      eventBus.$emit('changeTab', this.channels[this.activeIndex].id)
+    },
+
     // 弹出层
     openMoreAction (artId) {
       this.showMoreAction = true
       this.articleId = artId
+    },
+
+    // 切换到对应频道  关闭弹层
+    selectChannel (id) {
+      const index = this.channels.findIndex(item => item.id === id)
+      this.activeIndex = index // tabs激活标签切换到对应标签
+      this.showChannelEdit = false
     },
 
     // 不喜欢文章
