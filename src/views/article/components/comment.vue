@@ -100,6 +100,19 @@ export default {
     this.reply.finished = false // 设置成原始状态
     this.reply.loading = true // 打开加载状态 这时候没有自动检查
     this.getReply() // 开始调用第一页数据
+  },
+
+  // 获取评论  获取回复数据
+  async getReply () {
+    // 加载逻辑
+    const data = await getComments({
+      type: 'c',
+      offest: this.reply.offest,
+      source: this.reply.commentId.toString()
+    })
+    if (!this.reply.finished) {
+      this.reply.offest = data.last_id
+    }
   }
 }
 </script>
