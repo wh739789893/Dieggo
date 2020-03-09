@@ -36,12 +36,13 @@
         <!-- 回复 -->
     <van-action-sheet v-model="showReply" :round="false" class="reply_dialog" title="回复评论">
       <van-list  @load="getReply"  :immediate-check="false"   v-model="reply.loading" :finished="reply.finished" finished-text="没有更多了">
-        <div class="item van-hairline--bottom van-hairline--top" v-for="index in 8" :key="index">
-          <van-image round width="1rem" height="1rem" fit="fill" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <div class="item van-hairline--bottom van-hairline--top" v-for="reply in reply.list" :key="reply.com_id.toString()">
+        <!-- 用户头像 -->
+          <van-image round width="1rem" height="1rem" fit="fill" :src="reply.aut_photo" />
           <div class="info">
-            <p><span class="name">一阵清风</span></p>
-            <p>评论的内容，。。。。</p>
-            <p><span class="time">两天内</span></p>
+            <p><span class="name">{{ reply.aut_name }}</span></p>
+            <p>{{ reply.content }}</p>
+            <p><span class="time">{{ reply.pubdate | relTime }}</span></p>
           </div>
         </div>
       </van-list>
