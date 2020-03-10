@@ -24,3 +24,10 @@ export function unFollowUser (target) {
     url: `/user/followings/${target}`
   })
 }
+
+/** **获取用户个人信息*****/
+export function getUserInfo () {
+  return request({
+    url: '/user'
+  })
+}
