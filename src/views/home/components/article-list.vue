@@ -2,6 +2,7 @@
   <div class="scroll-wrapper">
     <van-pull-refresh v-model="downLoading" @refresh="onRefresh" :success-text="refreshSuccessText">
       <!-- List组件 -->
+      <!-- 这个组件支持vancell  带to属性去跳转路由 -->
       <van-list v-model="upLoading" :finished="finished" finished-text="我是有底线的!...." @load="onLoad">
         <van-cell  :to="`/article?articleId=${article.art_id.toString()}`"    v-for="article in articles" :key="article.art_id.toString()">
           <div class="article_item">
