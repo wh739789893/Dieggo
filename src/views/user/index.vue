@@ -64,24 +64,24 @@ export default {
     async getUserInfo () {
       this.userInfo = await getUserInfo()
       this.updatePhoto({ photo: this.userInfo.photo })
+    },
+
+    // 登出方法
+    async lgout () {
+      try {
+        await this.$dialog.confirm({
+          title: '提示',
+          message: '确定要退出登陆吗?'
+        })
+        this.clearUser() // 清除token
+        this.$router.push('/login') // 跳转到登录页
+      } catch (error) {
+
+      }
     }
   },
   created () {
     this.getUserInfo()
-  },
-
-  // 登出方法
-  async lgout () {
-    try {
-      await this.$dialog.confirm({
-        title: '提示',
-        message: '确定要退出登陆吗?'
-      })
-      this.clearUser() // 清除token
-      this.$router.push('/login') // 跳转到登录页
-    } catch (error) {
-
-    }
   }
 
 }
