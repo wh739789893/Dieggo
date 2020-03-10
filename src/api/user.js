@@ -17,11 +17,10 @@ export function followUser (data) {
     data
   })
 }
-
 /** *取消关注***/
-export function unfollowUser (target) {
+export function unFollowUser (target) {
   return request({
-    url: `/user/followings/${target}`,
-    method: 'delete'
+    method: 'delete',
+    url: `/user/followings/${target}`
   })
 }

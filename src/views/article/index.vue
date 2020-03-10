@@ -1,26 +1,31 @@
 <template>
-     <div class='container'>
+   <div class='container'>
     <van-nav-bar fixed :title="article.title" left-arrow @click-left="$router.back()" />
     <div class="detail">
-      <h3 class="title">{{article.title}}</h3>
+      <h3 class="title">{{ article.title }}</h3>
       <div class="author">
-        <van-image round width="1rem" height="1rem" fit="fill" src="article.aut_photo" />
+        <van-image round width="1rem" height="1rem" fit="fill"
+         :src="article.aut_photo" />
         <div class="text">
-          <p class="name">{{article.aut_name}}</p>
+          <p class="name">{{ article.aut_name }}</p>
+          <!-- relTime过滤器 将时间转化成相对时间 -->
           <p class="time">{{ article.pubdate | relTime }}</p>
         </div>
-        <!-- 给一个标记表示已经关注 -->
-        <van-button   @click="follow()"   round size="small" type="info">{{ article.is_followed? '已关注':'+关注'}}</van-button>
+        <!-- is_followed 为true表示已关注该用户 false表示未关注 -->
+        <!-- loading表示进度 -->
+        <van-button @click="follow" :loading="followLoading" round size="small" type="info">{{ article.is_followed ? '已关注' : '+ 关注' }}</van-button>
       </div>
-
-      <!-- 渲染html标签 -->
+      <!-- v-html 可以渲染html标签 -->
       <div class="content" v-html="article.content">
       </div>
       <div class="zan">
-        <van-button round size="small" class="{active:article.attitude ===1}" plain icon="like-o">点赞</van-button>
+       <!-- :class="{css名称: 布尔值}" -->
+        <van-button round size="small" :class="{active: article.attitude === 1}" plain icon="like-o">点赞</van-button>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <van-button round size="small"  class="{active:article.attitude ===0}"    plain icon="delete">不喜欢</van-button>
+        <van-button round size="small" :class="{active: article.attitude === 0}" plain icon="delete">不喜欢</van-button>
       </div>
+      <!-- 放置我们的评论组件 -->
+      <comment></comment>
     </div>
   </div>
 </template>
@@ -28,11 +33,16 @@
 <script>
 import { getArticleInfo } from '@/api/article'
 import { followUser, unFollowUser } from '@/api/user'
+import Comment from './components/comment'
 export default {
-  name: 'article',
+  name: 'articles',
+  components: {
+    Comment
+  },
   data () {
     return {
-      article: {} // 接收文章数据
+      article: {}, // 接收文章数据
+      followLoading: false // 默认是关闭的
     }
   },
 
@@ -46,6 +56,8 @@ export default {
     // 取消与关注
     async follow () {
       try {
+        this.followLoading = true // 打开加载状态
+        await this.$sleep() // 强制的延迟几百毫秒
         if (this.article.is_followed) {
           // 取消关注
           await unFollowUser(this.article.aut_id)
@@ -55,6 +67,7 @@ export default {
         }
         this.article.is_followed = !this.article.is_followed // 取反操作 关注与取消
         this.$gnotify({ type: 'success', message: '操作成功' })
+        this.followLoading = false // 关闭状态
       } catch (error) {
         this.$gnotify({ type: 'success', message: '操作失败' })
       }
@@ -94,6 +107,7 @@ export default {
     position:sticky;
     background-color: #fff;
     top:46px;
+    z-index: 2;
     .text {
       flex: 1;
       padding-left: 10px;
