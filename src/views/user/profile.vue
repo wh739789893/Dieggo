@@ -55,6 +55,7 @@
 
 <script>
 import dayjs from 'dayjs'
+import { getUserProfile } from '@/api/user'
 // import { mapMutations } from 'vuex'
 export default {
   name: 'profile',
@@ -73,6 +74,13 @@ export default {
   },
 
   methods: {
+
+    // 获取用户资料方法
+    async getUserProfile () {
+      const data = await getUserProfile()
+      this.user = data
+    },
+
     // 昵称长度判断
     btnName () {
       if (this.user.name.length < 1 || this.user.name.length > 7) {
@@ -100,6 +108,10 @@ export default {
       this.currentDate = new Date(this.user.birthday) // 当前用户生日 赋值当前绑定时间数据
       this.showBirthDay = true // 显示生日弹层
     }
+  },
+
+  created () {
+    this.getUserProfile()
   }
 }
 </script>
