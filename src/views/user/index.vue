@@ -44,7 +44,7 @@
       <van-cell icon="edit" title="编辑资料" to="/user/profile" is-link />
       <van-cell icon="chat-o" title="小智同学" to="/user/chat" is-link />
       <van-cell icon="setting-o" title="系统设置" is-link />
-      <van-cell icon="warning-o" title="退出登录" to="/login" is-link />
+      <van-cell icon="warning-o" title="退出登录" @click="lgout" is-link />
     </van-cell-group>
   </div>
 </template>
@@ -68,7 +68,22 @@ export default {
   },
   created () {
     this.getUserInfo()
+  },
+
+  // 登出方法
+  async lgout () {
+    try {
+      await this.$dialog.confirm({
+        title: '提示',
+        message: '确定要退出登陆吗?'
+      })
+      this.clearUser() // 清除token
+      this.$router.push('/login') // 跳转到登录页
+    } catch (error) {
+
+    }
   }
+
 }
 </script>
 
