@@ -10,12 +10,13 @@
           height="1.5rem"
           fit="cover"
           round
-          src="https://img.yzcdn.cn/vant/cat.jpeg"
+          @click="showPhoto=true"
+          :src="user.photo"
         />
       </van-cell>
-      <van-cell is-link title="名称" value="用户名称" />
-      <van-cell is-link title="性别" value='男'/>
-      <van-cell is-link title="生日" value="2019-08-08" />
+      <van-cell is-link title="名称"  @click="showName=true"      :value="user.name" />
+      <van-cell is-link title="性别"  @click="showGemder=true"    :value='user.gender===0?"男":"女"'/>
+      <van-cell is-link title="生日"  @click="showDate"       :value="user.birthday" />
     </van-cell-group>
 
     <!-- 弹层组件开始 -->
@@ -27,7 +28,7 @@
     </van-popup>
 
     <!-- 昵称弹层  关闭点击弹层 关闭功能-->
-    <van-popup   :close-on-click-overlay="false"     v-model="showName" style="width:80%">
+    <van-popup   :close-on-click-overlay="false"  round   v-model="showName" style="width:80%">
         <!-- 编辑用户昵称  双向绑定用户昵称 -->
         <van-filed    :error-message="nameMsg"   v-model.trim="user.name" type="textarea" rows="4"></van-filed>
         <!-- 关闭按钮组件 -->
@@ -62,14 +63,23 @@ export default {
   data () {
     return {
 
-      actions: [{ name: '男' }, { name: '女' }], // 性别数据
       minDate: new Date(1900, 1, 1), // 最小时间
       maxDate: new Date(), // 生日最大时间 永远是小于等于当前时间的
       currentDate: new Date(), // 当前时间
       showBirthDay: false, // 是否显示日期弹层
       showPhoto: false, // 是否显示选择头像弹层
       showName: false, // 是否显示编辑昵称的弹层
-      showGender: false // 是否显示性别选择的弹层
+      showGender: false, // 是否显示性别选择的弹层
+
+      // 定义数据
+      user: {
+        name: '', // 用户昵称
+        gender: 1, // 0男  1女
+        birthday: '' // 默认生日
+      },
+      actions: [{ name: '男' }, { name: '女' }], // 性别数据
+      nameMsg: '' // 控制显示的错误信息
+
     }
   },
 
@@ -79,6 +89,7 @@ export default {
     async getUserProfile () {
       const data = await getUserProfile()
       this.user = data
+      this.photo = data.photo
     },
 
     // 昵称长度判断
