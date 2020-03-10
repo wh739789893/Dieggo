@@ -20,16 +20,18 @@
 
     <!-- 弹层组件开始 -->
     <!-- 头像弹层 -->
-    <van-popup v-model="showPhoto" style="width:80%">
+    <van-popup   v-model="showPhoto" style="width:80%">
         <!-- 内容 -->
         <van-cell is-link  title="本地相册选择图片"></van-cell>
         <van-cell is-link  title="拍照"></van-cell>
     </van-popup>
 
-    <!-- 昵称弹层 -->
-    <van-popup v-model="showName" style="width:80%">
+    <!-- 昵称弹层  关闭点击弹层 关闭功能-->
+    <van-popup   :close-on-click-overlay="false"     v-model="showName" style="width:80%">
         <!-- 编辑用户昵称  双向绑定用户昵称 -->
-        <van-filed v-model="user.name" type="textarea" rows="4"></van-filed>
+        <van-filed v-model.trim="user.name" type="textarea" rows="4"></van-filed>
+        <!-- 关闭按钮组件 -->
+        <van-button type="info" size="large" block @click="btnName">确定</van-button>
     </van-popup>
 
     <!-- 性别弹层 -->
@@ -54,6 +56,11 @@ export default {
   name: 'profile',
   data () {
     return {
+
+      actions: [{ name: '男' }, { name: '女' }], // 性别数据
+      minDate: new Date(1900, 1, 1), // 最小时间
+      maxDate: new Date(), // 生日最大时间 永远是小于等于当前时间的
+      currentDate: new Date(), // 当前时间
       showBirthDay: false, // 是否显示日期弹层
       showPhoto: false, // 是否显示选择头像弹层
       showName: false, // 是否显示编辑昵称的弹层
