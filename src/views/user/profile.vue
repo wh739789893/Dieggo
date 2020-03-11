@@ -30,7 +30,7 @@
     <!-- 昵称弹层  关闭点击弹层 关闭功能-->
     <van-popup   :close-on-click-overlay="false"  round   v-model="showName" style="width:80%">
         <!-- 编辑用户昵称  双向绑定用户昵称 -->
-        <van-filed    :error-message="nameMsg"   v-model.trim="user.name" type="textarea" rows="4"></van-filed>
+         <van-field :error-message="nameMsg" v-model.trim="user.name" type='textarea'  rows="4"></van-field>
         <!-- 关闭按钮组件 -->
         <van-button type="info" size="large" block @click="btnName">确定</van-button>
     </van-popup>
@@ -52,14 +52,14 @@
         </van-datetime-picker>
     </van-popup>
     <!-- 文件选择控件 -->
-    <input ref="file" @change="upload()"   type="file"  style="display:none">
+    <input ref="myFile" @change="upload()"   type="file"  name=""     style="display:none">
   </div>
 </template>
 
 <script>
 import dayjs from 'dayjs'
-import { getUserProfile, saveUserInfo } from '@/api/user'
-// import { mapMutations } from 'vuex'
+import { getUserProfile, saveUserInfo, updateImg } from '@/api/user'
+import { mapMutations } from 'vuex'
 export default {
   name: 'profile',
   data () {
@@ -86,12 +86,12 @@ export default {
   },
 
   methods: {
-
+    ...mapMutations(['updatePhoto']), // 编辑资料页面引入 公共方法
     // 获取用户资料方法
     async getUserProfile () {
       const data = await getUserProfile()
+      this.updatePhoto({ photo: data.photo }) // 头像地址 更新设置给公共的state
       this.user = data
-      this.photo = data.photo
     },
 
     // 保存方法
@@ -130,12 +130,26 @@ export default {
     showDate () {
       this.currentDate = new Date(this.user.birthday) // 当前用户生日 赋值当前绑定时间数据
       this.showBirthDay = true // 显示生日弹层
-    }
-  },
-  // 点击图片触发
-  openChangeFile () {
+    },
+
+    // 点击图片触发
+    openChangeFile () {
     //  先获取dom元素
-    this.$refs.myFile.click() // 触发文件上传组件的点击方法
+      this.$refs.myFile.click() // 触发文件上传组件的点击方法
+    },
+
+    // 选择图片触发
+    async upload () {
+      const data = new FormData()
+      data.append('photo', this.$refs.myFile.files[0])
+      const result = await updateImg(data)
+      this.user.photo = result.photo // 上传成功头像 设置给当前头像
+      this.showPhoto = false // 关闭弹层
+      this.updatePhoto({
+        photo: result.photo
+      })
+    }
+
   },
 
   created () {
