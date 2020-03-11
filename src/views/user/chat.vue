@@ -1,14 +1,14 @@
 <template>
     <div class="container">
-    <van-nav-bar fixed left-arrow @click-left="$router.back()" title="小智同学"></van-nav-bar>
+    <van-nav-bar fixed left-arrow @click-left="$router.back()" title="迅达聊天"></van-nav-bar>
     <div class="chat-list">
       <div class="chat-item left">
-        <van-image fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <van-image fit="cover" round :src="XZImg" />
         <div class="chat-pao">ewqewq</div>
       </div>
       <div class="chat-item right">
         <div class="chat-pao">ewqewq</div>
-        <van-image  fit="cover" round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <van-image  fit="cover" round :src="photo" />
       </div>
     </div>
     <div class="reply-container van-hairline--top">
@@ -21,13 +21,20 @@
 </template>
 
 <script>
+import XZImg from '@/assets/images/xz.png'
+import { mapState } from 'vuex'
 export default {
   name: 'chat',
   data () {
     return {
       value: '',
-      loading: false
+      loading: false,
+      XZImg,
+      list: [] // 聊天记录
     }
+  },
+  computed: {
+    ...mapState(['photo'])
   },
   methods: {
     send () {}
