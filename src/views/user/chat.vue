@@ -71,12 +71,30 @@ export default {
       this.list.push(obj)
       this.value = '' // 清空内容
       this.loading = false // 回复状态
+      this.scrollBottom() // 消息发送完毕  滚动条设置距离
 
       // 监听回复消息
       this.socket.on('message', data => {
         this.list.push({ ...data, name: 'xd' })
+        this.scrollBottom()
+      })
+    },
+
+    // 滚动方法
+    scrollBottom () {
+      // 视图更新后之后执行
+      this.$nextTick(() => {
+        // scrollTop  滚动条位置距离顶部距离属性来控制
+        // scrollHeight 滚动条距离
+        // $nextTick 会在上一次数据更新 并且视图完成渲染之后执行
+        this.$refs.myList.scrollTop = this.$refs.myList.scrollHeight // 滚动到底部
       })
     }
+  },
+
+  // 页面销毁之前的钩子函数
+  beforeDestroy () {
+    this.socket.close() // 销毁链接
   }
 }
 </script>
