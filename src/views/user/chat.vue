@@ -41,6 +41,7 @@ export default {
     ...mapState(['photo', 'user'])
   },
   created () {
+    // io(连接地址, { 额外参数 })
     this.socket = io('http://ttapi.research.itcast.cn', {
       query: {
         token: this.user.token // vuex中获取用户token
@@ -52,6 +53,7 @@ export default {
     })
     this.socket.on('message', (data) => {
       this.list.push({ ...data, name: 'xd' }) // name: 'xd' 相当于记录一下 谁发的消息
+      this.scrollBottom() // 接收消息的时候 也要设置 滚动条距离
     })
   },
   methods: {
@@ -72,12 +74,6 @@ export default {
       this.value = '' // 清空内容
       this.loading = false // 回复状态
       this.scrollBottom() // 消息发送完毕  滚动条设置距离
-
-      // 监听回复消息
-      this.socket.on('message', data => {
-        this.list.push({ ...data, name: 'xd' })
-        this.scrollBottom()
-      })
     },
 
     // 滚动方法
