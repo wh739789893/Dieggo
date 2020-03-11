@@ -48,7 +48,7 @@ export default {
       }
     })
     this.socket.on('connect', () => {
-      console.log('服务器建立连接成功!')
+      // console.log('服务器建立连接成功!')
       this.list.push({ msg: '醉暖人心,你好啊,第一次和你聊天呢!', name: 'xd' })
     })
     this.socket.on('message', (data) => {
