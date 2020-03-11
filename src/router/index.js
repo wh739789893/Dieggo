@@ -22,7 +22,11 @@ const routes = [
     component: Layout, // 一级路由
     children: [{
       path: '/',
-      component: Home // 二级路由 首页
+      component: Home, // 二级路由 首页
+      meta: {
+        // meta属性在存在二级路由并且path相同的情况下 需要写到 二级路由下
+        isAlive: true // 是否缓存组件实例
+      }
     },
     {
       path: '/question',
