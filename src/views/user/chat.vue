@@ -1,7 +1,7 @@
 <template>
     <div class="container">
     <van-nav-bar fixed left-arrow @click-left="$router.back()" title="迅达聊天"></van-nav-bar>
-    <div class="chat-list">
+    <div class="chat-list" ref="myList">
       <div :class="{left:item.name === 'xd',right:item.name!='xd'}" class="chat-item" v-for="(item,index) in list" :key="index">
         <!-- 迅达机器人图片 -->
         <!-- 根据name值决定是否显示 左边或者右边图片 -->
@@ -55,7 +55,28 @@ export default {
     })
   },
   methods: {
-    send () {}
+    async send () {
+      if (!this.value) return false // 若为空字符串 直接返回
+      this.loading = true // 打开加载
+      await this.$sleep()
+
+      // 若消息不为空则继续发送
+      const obj = {
+        msg: this.value,
+        timestamp: Date.now() // 传入当前时间戳
+      }
+
+      // 发送消息
+      this.socket.emit('message', obj)
+      this.list.push(obj)
+      this.value = '' // 清空内容
+      this.loading = false // 回复状态
+
+      // 监听回复消息
+      this.socket.on('message', data => {
+        this.list.push({ ...data, name: 'xd' })
+      })
+    }
   }
 }
 </script>
