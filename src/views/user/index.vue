@@ -1,30 +1,29 @@
 <template>
-  <div class='container'>
-        <div class="user-profile">
+   <div class='container'>
+    <!-- 用户个人资料 -->
+    <div class="user-profile">
       <div class="info">
+        <!-- 头像 -->
         <van-image round :src="userInfo.photo" />
+        <!-- 用户名 -->
         <h3 class="name">
-          {{userInfo.name}}
+          {{ userInfo.name }}
           <br />
           <van-tag size="mini">申请认证</van-tag>
         </h3>
       </div>
       <van-row>
         <van-col span="8">
-          <p>{{userInfo.art_count}}</p>
+          <p>{{ userInfo.art_count }}</p>
           <p>动态</p>
         </van-col>
         <van-col span="8">
-          <p>{{userInfo.follow_count}}</p>
+          <p>{{ userInfo.follow_count }}</p>
           <p>关注</p>
         </van-col>
         <van-col span="8">
           <p>{{userInfo.fans_count}}</p>
           <p>粉丝</p>
-        </van-col>
-         <van-col span="6">
-          <p>{{userInfo.like_count}}</p>
-          <p>被赞</p>
         </van-col>
       </van-row>
     </div>
@@ -87,7 +86,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang='less' scoped>
 .user {
   &-profile {
     width: 100%;

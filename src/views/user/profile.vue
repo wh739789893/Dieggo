@@ -52,7 +52,7 @@
         </van-datetime-picker>
     </van-popup>
     <!-- 文件选择控件 -->
-    <input ref="myFile" @change="upload()"   type="file"  name=""     style="display:none">
+    <input ref="myFile" @change="upload"   type="file"  name=""     style="display:none">
   </div>
 </template>
 
@@ -141,11 +141,11 @@ export default {
     // 选择图片触发
     async upload () {
       const data = new FormData()
-      data.append('photo', this.$refs.myFile.files[0])
-      const result = await updateImg(data)
+      data.append('photo', this.$refs.myFile.files[0]) // 往formData 里添加参数 后面是dom参数
+      const result = await updateImg(data) // 调用接口
       this.user.photo = result.photo // 上传成功头像 设置给当前头像
       this.showPhoto = false // 关闭弹层
-      this.updatePhoto({
+      this.updatePhoto({ // 关键的一步 更新头像后 重新设置给公共状态
         photo: result.photo
       })
     }
