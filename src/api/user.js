@@ -49,3 +49,14 @@ export function saveUserInfo (data) {
     method: 'patch'
   })
 }
+
+/****
+ *封装一个编辑用户头像的API
+ * ****/
+export function updateImg (data) {
+  return request({
+    url: '/user/photo', // 编辑头像的地址
+    method: 'patch', // 设置头像的类型
+    data
+  })
+}
