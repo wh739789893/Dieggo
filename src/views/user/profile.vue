@@ -23,7 +23,7 @@
     <!-- 头像弹层 -->
     <van-popup   v-model="showPhoto" style="width:80%">
         <!-- 内容 -->
-        <van-cell is-link  title="本地相册选择图片"></van-cell>
+        <van-cell is-link  title="本地相册选择图片"  @click="openChangeFile"></van-cell>
         <van-cell is-link  title="拍照"></van-cell>
     </van-popup>
 
@@ -51,6 +51,8 @@
         >
         </van-datetime-picker>
     </van-popup>
+    <!-- 文件选择控件 -->
+    <input ref="file" @change="upload()"   type="file"  style="display:none">
   </div>
 </template>
 
@@ -119,6 +121,11 @@ export default {
       this.currentDate = new Date(this.user.birthday) // 当前用户生日 赋值当前绑定时间数据
       this.showBirthDay = true // 显示生日弹层
     }
+  },
+  // 点击图片触发
+  openChangeFile () {
+    //  先获取dom元素
+    this.$refs.myFile.click() // 触发文件上传组件的点击方法
   },
 
   created () {
