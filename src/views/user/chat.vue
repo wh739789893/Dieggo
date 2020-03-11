@@ -23,6 +23,7 @@
 <script>
 import XZImg from '@/assets/images/xz.png'
 import { mapState } from 'vuex'
+import io from 'socket.io-client' // 引入socket.io的客户端代码
 export default {
   name: 'chat',
   data () {
@@ -35,6 +36,20 @@ export default {
   },
   computed: {
     ...mapState(['photo'])
+  },
+  created () {
+    this.socket = io('http://ttapi.research.itcast.cn', {
+      query: {
+        token: this.user.token // vuex中获取用户token
+      }
+    })
+    this.socket.on('connect', () => {
+      console.log('服务器建立连接成功!')
+      this.list.push({ msg: '醉暖人心,你好啊,第一次和你聊天呢!', name: 'xd' })
+    })
+    this.socket.on('message', (data) => {
+      this.list.push({ ...data, name: 'xd' }) // name: 'xd' 相当于记录一下 谁发的消息
+    })
   },
   methods: {
     send () {}
