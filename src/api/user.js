@@ -40,3 +40,12 @@ export function getUserProfile () {
     url: '/user/profile'
   })
 }
+
+/**  封装一个保存用户方法  **/
+export function saveUserInfo (data) {
+  return request({
+    url: '/user/profile',
+    data,
+    method: 'patch'
+  })
+}

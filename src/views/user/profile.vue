@@ -1,7 +1,7 @@
 <template>
     <div class="container">
       <!-- 导航 -->
-    <van-nav-bar left-arrow @click-left="$router.back()" title="编辑资料" right-text="保存" ></van-nav-bar>
+    <van-nav-bar    @click-right="saveUserInfo"  left-arrow @click-left="$router.back()" title="编辑资料" right-text="保存" ></van-nav-bar>
     <van-cell-group>
       <van-cell is-link title="头像"  center>
         <van-image
@@ -58,7 +58,7 @@
 
 <script>
 import dayjs from 'dayjs'
-import { getUserProfile } from '@/api/user'
+import { getUserProfile, saveUserInfo } from '@/api/user'
 // import { mapMutations } from 'vuex'
 export default {
   name: 'profile',
@@ -92,6 +92,16 @@ export default {
       const data = await getUserProfile()
       this.user = data
       this.photo = data.photo
+    },
+
+    // 保存方法
+    async saveUserInfo () {
+      try {
+        await saveUserInfo({ ...this.user, photo: null })
+        this.$gnotify({ type: 'success', message: '保存成功' })
+      } catch (error) {
+        this.$gnotify({ type: 'success', message: '保存失败' })
+      }
     },
 
     // 昵称长度判断
