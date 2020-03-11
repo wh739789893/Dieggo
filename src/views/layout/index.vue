@@ -3,7 +3,10 @@
      <van-nav-bar   @click-right="$router.push('/search')"   v-if="showNavBar" fixed title="雷讯讯达" right-text="搜索"></van-nav-bar>
      <!-- 二级路由容器 -->
      <div class="my-wrapper" :class="{ noTop: !showNavBar}">
+       <!-- 组件缓存 -->
+       <keep-alive>
           <router-view></router-view>
+       </keep-alive>
      </div>
      <!-- 标签栏 -->
      <van-tabbar route>
