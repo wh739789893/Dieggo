@@ -2,14 +2,17 @@
     <div class="container">
     <van-nav-bar fixed left-arrow @click-left="$router.back()" title="迅达聊天"></van-nav-bar>
     <div class="chat-list">
-      <div class="chat-item left">
-        <van-image fit="cover" round :src="XZImg" />
-        <div class="chat-pao">ewqewq</div>
+      <div :class="{left:item.name === 'xd',right:item.name!='xd'}" class="chat-item" v-for="(item,index) in list" :key="index">
+        <!-- 迅达机器人图片 -->
+        <!-- 根据name值决定是否显示 左边或者右边图片 -->
+        <van-image  v-if="item.name ==='xd'"      fit="cover" round :src="XZImg" />
+        <div class="chat-pao">{{item.msg}}</div>
+        <van-image  v-if="item.name!=='xd'" fit="cover" round :src="photo" />
       </div>
-      <div class="chat-item right">
+      <!-- <div class="chat-item right">
         <div class="chat-pao">ewqewq</div>
         <van-image  fit="cover" round :src="photo" />
-      </div>
+      </div> -->
     </div>
     <div class="reply-container van-hairline--top">
       <van-field v-model="value" placeholder="说点什么...">
@@ -35,7 +38,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['photo'])
+    ...mapState(['photo', 'user'])
   },
   created () {
     this.socket = io('http://ttapi.research.itcast.cn', {
