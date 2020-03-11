@@ -18,7 +18,6 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'home',
     component: Layout, // 一级路由
     children: [{
       path: '/',
